@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    networks:
+      - loki
+  grafana:
+    image: grafana/grafana:master
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - loki
+networks:
+  loki:
+    external: true
