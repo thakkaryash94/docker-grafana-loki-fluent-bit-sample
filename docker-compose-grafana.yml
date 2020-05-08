@@ -9,10 +9,23 @@ services:
     networks:
       - loki
   grafana:
-    image: grafana/grafana:master
+    image: grafana/grafana:7.0.0-beta2
     container_name: grafana
     ports:
       - "3000:3000"
+    environment:
+      GF_RENDERING_SERVER_URL: http://renderer:8081/render
+      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
+      GF_LOG_FILTERS: rendering:debug
+    networks:
+      - loki
+  renderer:
+    image: grafana/grafana-image-renderer:2.0.0-beta1
+    container_name: grafana-image-renderer
+    ports:
+      - 8081
+    environment:
+      ENABLE_METRICS: "true"
     networks:
       - loki
 networks:
