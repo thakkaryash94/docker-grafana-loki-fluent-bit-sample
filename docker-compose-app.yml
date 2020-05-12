@@ -9,4 +9,4 @@ services:
     logging:
       driver: fluentd
       options:
-        fluentd-address: 192.168.0.6:24224
+        fluentd-address: FLUENT_BIT_ADDRESS:24224
