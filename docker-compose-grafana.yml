@@ -4,8 +4,8 @@ services:
   loki:
     image: grafana/loki:latest
     container_name: loki
-    ports:
-      - "3100:3100"
+    expose:
+      - "3100"
     networks:
       - loki
   grafana:
@@ -22,8 +22,8 @@ services:
   renderer:
     image: grafana/grafana-image-renderer:2.0.0-beta1
     container_name: grafana-image-renderer
-    ports:
-      - 8081
+    expose:
+      - "8081"
     environment:
       ENABLE_METRICS: "true"
     networks:
