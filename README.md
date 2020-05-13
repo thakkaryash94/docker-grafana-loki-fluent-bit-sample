@@ -1,6 +1,6 @@
-# Getting Started with Grafana Loki, Fluent Bit and Docker Logging
+# Docker centralized logging using Fluent Bit, Grafana and Loki
 
-When running microservices as containers, monitoring becomes very complex and difficult. That's where Prometheus, Grafana come to the rescue. Prometheus collects the metrics data and Grafana helps us to convert those metrics into beautiful visuals. Grafana allows you to query, visualize, and create an alert on metrics, no matter where they are stored. We can visualize metrics like CPU usage, memory usage, containers count, and much more. But there are few things that we can't visualize like container logs, it needs to be in tabular format with text data. For that, we can setup EFK (Elasticsearch + Fluentd + Kibana) stack, so Fluentd will collect logs from a docker container and forward it to Elasticsearch and then we can search logs using Kibana.
+When running micro-services as containers, monitoring becomes very complex and difficult. That's where Prometheus, Grafana come to the rescue. Prometheus collects the metrics data and Grafana helps us to convert those metrics into beautiful visuals. Grafana allows you to query, visualize, and create an alert on metrics, no matter where they are stored. We can visualize metrics like CPU usage, memory usage, containers count, and much more. But there are few things that we can't visualize like container logs, it needs to be in tabular format with text data. For that, we can setup EFK (Elasticsearch + Fluentd + Kibana) stack, so Fluentd will collect logs from a docker container and forward it to Elasticsearch and then we can search logs using Kibana.
 
 Grafana team has released Loki, which is inspired by Prometheus to solve this issue. So now, we don't need to manage multiple stacks to monitor the running systems like Grafana and Prometheus to monitor and EFK to check the logs.
 
@@ -56,7 +56,7 @@ We will be using `grafana/fluent-bit-plugin-loki:latest` image instead of a flue
 
 This file contains fluent-bit configuration. Here, for input, we are listening on 0.0.0.0:24224 port and forwarding whatever we are getting to output plugins. We are setting a few Loki configs like LabelKeys, LineFormat, LogLevel, Url. The main key is LabelKeys, using this, we will be able to see the container logs, to make it dynamic, we are setting it so `container_name`, which means when we will be running our services, we need to pass `container_name` in docker-compose file, using that name, we will be able to search and differentiate container logs. We can add as many LabelKeys as we want with a comma(',').
 
-``` toml
+```
 [INPUT]
     Name        forward
     Listen      0.0.0.0
@@ -101,17 +101,18 @@ To see the logs on Grafana dashboard, you can follow [YouTube video](https://you
 
 3. Enter `http://loki:3100` in URL under `HTTP` section. We can do this because we are running Loki and Grafana in the same network `loki` else you have to enter host IP address and port here, click on `Save and Test` button from the bottom of the page.
 
-![Loki as a Data Source](./docs/img/datasource.png)
+    ![Grafana Data Source](https://raw.githubusercontent.com/thakkaryash94/docker-grafana-loki-fluent-bit-sample/master/docs/img/datasource.png)
 
 4. Now, go to 3rd tab `Explore` from the left sidebar or http://localhost:3000/explore, click on `Log Labels` dropdown, here you will see `container_name` and `job` labels, these are same labels that we have mentioned in the `fluent-bit.conf` file with `LabelKeys` key.
 
 5. Click on `container_name`, now, you should see our app service container name in the next step else type `{container_name="express-app"}` in the Loki query search. Click on that and that's it, now you should be able to see the container logs, these are the logs that we generated after starting up our app service.
 
-![Grafana Explore](./docs/img/explore.png)
+![Grafana Explore](https://raw.githubusercontent.com/thakkaryash94/docker-grafana-loki-fluent-bit-sample/master/docs/img/explore.png)
+
 
 Now, we can tweak the view add this to our Grafana Dashboard and that's it.
 
-So, like this, we have setup Fluentd-Grafana-Loki stack to collect and view the container logs on Grafana Dashboard.
+So, like this, we have setup fluentd-grafana-loki stack to collect and view the container logs on Grafana Dashboard.
 
 Below are the links that I have mentioned in the blog, that will help you to setup the stack.
 
