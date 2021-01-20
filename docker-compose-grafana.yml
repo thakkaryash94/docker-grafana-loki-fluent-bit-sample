@@ -9,7 +9,7 @@ services:
     networks:
       - loki
   grafana:
-    image: grafana/grafana:7.0.0
+    image: grafana/grafana:latest
     container_name: grafana
     ports:
       - "3000:3000"
@@ -20,7 +20,7 @@ services:
     networks:
       - loki
   renderer:
-    image: grafana/grafana-image-renderer:2.0.0
+    image: grafana/grafana-image-renderer:latest
     container_name: grafana-image-renderer
     expose:
       - "8081"
