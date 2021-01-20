@@ -62,7 +62,7 @@ This file contains fluent-bit configuration. Here, for input, we are listening o
     Listen      0.0.0.0
     Port        24224
 [Output]
-    Name loki
+    Name grafana-loki
     Match *
     Url ${LOKI_URL}
     RemoveKeys source
